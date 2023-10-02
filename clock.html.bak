@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+		@font-face {
+			font-family: 'Digital-7';
+			src: url('digital-7.ttf');
+		}
+        body {
+            display: flex;
+            flex-direction: column;
+            overflow:hidden;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: black;
+            font-family: Digital-7;
+        }
+        #ido {
+			padding: 5px;
+            font-size: 12em;
+            color: red;
+			height:350px;
+        }
+        #idojaras {
+            position: absolute;
+            bottom: 0px;
+            width: 100%;
+            background-color: black;
+			font-size: 1.6em;
+			color: red;
+            text-align: center;
+            padding: 10px 0;
+			border: 1px blue solid;
+        }
+		#icon{
+			position: absolute;
+            bottom: 20px;
+			color:white;
+		}
+    </style>
+</head>
+<body>
+    <div id="ido"></div>
+	<div id="icon"></div>
+    <div id="idojaras"> </div>
+
+    <script>
+        function idoFrissites() {
+            var datum = new Date();
+            var ora = datum.getHours();
+            var perc = datum.getMinutes();
+            var masodperc = datum.getSeconds();
+            ora = ora < 10 ? '0' + ora : ora;
+            perc = perc < 10 ? '0' + perc : perc;
+            masodperc = masodperc < 10 ? '0' + masodperc : masodperc;
+
+            document.getElementById('ido').textContent = ora + ':' + perc  ;
+        }
+
+        setInterval(idoFrissites, 1000);
+        idoFrissites();
+
+        function idojarasFrissites() {
+            fetch('https://api.openweathermap.org/data/2.5/weather?q=Derecske&appid=9967266699054a0c6551d97e23722b28&units=metric')
+                .then(response => response.json())
+                .then(data => {
+					console.log(data);
+					document.getElementById('idojaras').innerHTML  = "<img src='temperature.png' width=15px>"+
+					"T:"+data.main.temp+" C, F:"+data.main.feels_like+" C, H:"+data.main.humidity+"%";
+					document.getElementById('icon').innerHTML = "<img src='https://openweathermap.org/img/wn/"+data.weather[0].icon+"@2x.png'>"
+                });
+        }
+
+        setInterval(idojarasFrissites, 60000);
+        idojarasFrissites();
+    </script>
+</body>
+</html>
