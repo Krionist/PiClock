@@ -17,8 +17,8 @@
             font-family: Digital-7;
         }
         #ido {
-			padding: 5px;
-            font-size: 12em;
+			padding: 15px;
+            font-size: 11.5em;
             color: red;
 			height:350px;
         }
@@ -27,23 +27,57 @@
             bottom: 0px;
             width: 100%;
             background-color: black;
-			font-size: 1.6em;
+			font-size: 2em;
 			color: red;
             text-align: center;
             padding: 10px 0;
 			border: 1px blue solid;
         }
+		#idojaras td{
+			width: 19%;
+		}
 		#icon{
 			position: absolute;
-            bottom: 20px;
+			top:130px;
 			color:white;
+		}
+		#date{
+			position:absolute;
+			top:170px;
+			left: 10px;
+			color:red;
+			font-size: 2.3em;
+		}
+		#des{
+			position:absolute;
+			top:170px;
+			right: 20px;
+			color:red;
+			font-size: 2.3em;
 		}
     </style>
 </head>
 <body>
     <div id="ido"></div>
+	<div id='date'></div>
+	<div id='des'></div>
 	<div id="icon"></div>
-    <div id="idojaras"> </div>
+    <div id="idojaras"> 
+	<table>
+		<tr>
+			<td id='temp'></td>
+			<td id='feels'></td>
+		</tr>
+		<tr>
+			<td id='humidity'></td>
+			<td id='wind'></td>
+		</tr>
+		<tr>
+			<td id='sunrise'></td>
+			<td id='sunset'></td>
+		</tr>
+	</table>
+	</div>
 
     <script>
         function idoFrissites() {
@@ -56,6 +90,8 @@
             masodperc = masodperc < 10 ? '0' + masodperc : masodperc;
 
             document.getElementById('ido').textContent = ora + ':' + perc  ;
+			let datumSzoveg = datum.toLocaleDateString();
+            document.getElementById('date').textContent = datumSzoveg  ;
         }
 
         setInterval(idoFrissites, 1000);
@@ -65,12 +101,22 @@
             fetch('https://api.openweathermap.org/data/2.5/weather?q=Derecske&appid=9967266699054a0c6551d97e23722b28&units=metric')
                 .then(response => response.json())
                 .then(data => {
-					console.log(data);
-					document.getElementById('idojaras').innerHTML  = "<img src='temperature.png' width=15px>"+
-					"T:"+data.main.temp+" C, F:"+data.main.feels_like+" C, H:"+data.main.humidity+"%";
+					document.getElementById('temp').innerHTML = 	"<img src='temperature.png' width=25px>"+data.main.temp+" C";
+					document.getElementById('feels').innerHTML  = "<img src='person.png' width=25px>"+data.main.feels_like+" C";
+					document.getElementById('humidity').innerHTML  = "<img src='drop.png' width=25px>"+data.main.humidity+" %";
+					document.getElementById('wind').innerHTML  = "<img src='wind.png' width=25px>"+data.wind.speed+" m/s";
+					document.getElementById('sunrise').innerHTML  = "<img src='sunrise.png' width=25px>"+convertData(data.sys.sunrise);
+					document.getElementById('sunset').innerHTML  = "<img src='sunset.png' width=25px>"+convertData(data.sys.sunset);
 					document.getElementById('icon').innerHTML = "<img src='https://openweathermap.org/img/wn/"+data.weather[0].icon+"@2x.png'>"
+					document.getElementById('des').innerHTML = data.weather[0].description
                 });
         }
+		
+		function convertData(time){
+		let date = new Date(time * 1000);
+		return  date.toLocaleTimeString("hu-HU", {timeZone: "Europe/Budapest"});
+		
+		}
 
         setInterval(idojarasFrissites, 60000);
         idojarasFrissites();
