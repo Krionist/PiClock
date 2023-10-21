@@ -104,7 +104,7 @@
 					document.getElementById('temp').innerHTML = 	"<img src='temperature.png' width=25px>"+data.main.temp+" C";
 					document.getElementById('feels').innerHTML  = "<img src='person.png' width=25px>"+data.main.feels_like+" C";
 					document.getElementById('humidity').innerHTML  = "<img src='drop.png' width=25px>"+data.main.humidity+" %";
-					document.getElementById('wind').innerHTML  = "<img src='wind.png' width=25px>"+data.wind.speed+" m/s";
+					document.getElementById('wind').innerHTML  = "<img src='wind.png' width=25px>"+Math.floor(data.wind.speed*3.6)+" km/h";
 					document.getElementById('sunrise').innerHTML  = "<img src='sunrise.png' width=25px>"+convertData(data.sys.sunrise);
 					document.getElementById('sunset').innerHTML  = "<img src='sunset.png' width=25px>"+convertData(data.sys.sunset);
 					document.getElementById('icon').innerHTML = "<img src='https://openweathermap.org/img/wn/"+data.weather[0].icon+"@2x.png'>"
